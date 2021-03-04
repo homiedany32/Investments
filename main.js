@@ -13,7 +13,7 @@ let maxAmount = 5000; // account values should be b/t 0 and max
 // Display Data
 function start() {
   for (let i = 0; i < 200; i++){
-    accounts.splice(0, 0, randomInt(0, maxAmount))
+    accounts.push(randomInt(0, maxAmount))
   }
 }
 
@@ -68,10 +68,8 @@ function countRange() {
   outputEl.innerHTML = "Count Range";
   let COUNT = 0;
   for(let i = 0; i < accounts.length; i++) {
-    if (accounts[i] >= 2000) {
-      if (accounts[i] <= 4000) {
-        COUNT++;
-      }
+    if (accounts[i] >= 2000 && accounts[i] <= 4000) {
+      COUNT++;
     }
   }
   alert("There are " + COUNT + " accounts that have between $2,000 and $4,000")
@@ -101,8 +99,9 @@ function hackerAttack() {
   outputEl.innerHTML = "Hacker Attack";
   let COUNT = 0;
   for(let i = 0; i < accounts.length; i++) {
-    COUNT += accounts[i] / 20;
-    accounts[i] -= accounts[i] / 20;
+    let amtStolen = accounts[i] * 0.05
+    COUNT += amtStolen
+    accounts[i] -= amtStolen
   }
   let Out = Math.floor(COUNT)
   alert("There was a total of $" + Out + " stolen in total")
@@ -119,14 +118,10 @@ function investmentStats() {
     if (accounts[i] > Max) {
       Max = accounts[i];
     }
-  }
-  for(let o = 0; o < accounts.length; o++) {
-    if (accounts[o] < Min) {
-      Min = accounts[o];
+    if (accounts[i] < Min) {
+      Min = accounts[i];
     }
-  }
-  for(let p = 0; p < accounts.length; p++) {
-    COUNT += accounts[p];
+    COUNT += accounts[i];
   }
   let Out1 = Math.floor(Max);
   let Out2 = Math.floor(Min);
@@ -138,31 +133,23 @@ function addAccount() {
   // Prompt for a new account amount and add this to the invesment account
   // array. Output a confirmation that a new account was added with an
   // opening amount of _______.
+  let newAmount = prompt("How much money should this new account have?", )
   outputEl.innerHTML = "Add Account";
-  let amount = randomInt(0, maxAmount)
-  accounts.splice(0, 0, amount)
-  alert ("A new account with a balance of $" + amount + " was added")
+  accounts.push(newAmount)
+  alert ("A new account with a balance of $" + newAmount + " was added")
 }
 
 function removeLow() {
   // Remove all accounts that are below $500.
   // Output how many accounts were removed.
   outputEl.innerHTML = "Remove Low Accounts";
-  let loop = 0;
   let OUT = 0;
-  accounts.sort(function(a, b){return a - b});
-  accounts.reverse();
-  for (let i = accounts.length; i > 0; i--) {
+  for (let i = accounts.length; i > -1; i--) {
     if (accounts[i] < 500) {
-      loop++;
+      accounts.splice(i, 1)
       OUT++;
     }
   }
-  while (loop > 0){
-    accounts.pop();
-    loop--;
-  }
-  accounts.reverse();
   alert("A total of " + OUT + " accounts were removed")
 }
 
